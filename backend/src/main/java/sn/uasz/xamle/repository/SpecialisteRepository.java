@@ -5,8 +5,9 @@ import sn.uasz.xamle.model.Specialiste;
 import sn.uasz.xamle.model.StatutValidation;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpecialisteRepository extends JpaRepository<Specialiste, Long> {
     List<Specialiste> findByStatut(StatutValidation statut);
-    List<Specialiste> findBySpecialiteContainingIgnoreCaseAndStatut(String specialite, StatutValidation statut);
+    Optional<Specialiste> findByUtilisateurEmail(String email);
 }
