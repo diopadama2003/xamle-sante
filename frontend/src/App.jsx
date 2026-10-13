@@ -1,5 +1,29 @@
+import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import RouteProtegee from './components/RouteProtegee'
 import CartePage from './pages/CartePage'
+import ConnexionPage from './pages/ConnexionPage'
+import InscriptionPage from './pages/InscriptionPage'
+import EspacePro from './pages/EspacePro'
+import './App.css'
 
 export default function App() {
-  return <CartePage />
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<CartePage />} />
+        <Route path="/connexion" element={<ConnexionPage />} />
+        <Route path="/inscription" element={<InscriptionPage />} />
+        <Route
+          path="/pro"
+          element={
+            <RouteProtegee roles={['PROFESSIONNEL']}>
+              <EspacePro />
+            </RouteProtegee>
+          }
+        />
+      </Routes>
+    </>
+  )
 }

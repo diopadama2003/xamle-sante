@@ -1,0 +1,28 @@
+import { Link } from 'react-router-dom'
+import { useAuth } from '../AuthContext'
+
+export default function Navbar() {
+  const { user, deconnecter } = useAuth()
+
+  return (
+    <nav className="navbar">
+      <Link to="/">Xamlé Santé</Link>
+      <div className="navbar-liens">
+        {user?.role === 'PROFESSIONNEL' && <Link to="/pro">Mon profil</Link>}
+        {user ? (
+          <>
+            <span>{user.prenom}</span>
+            <button className="nav-btn" onClick={deconnecter}>
+              Déconnexion
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/connexion">Connexion</Link>
+            <Link to="/inscription">Inscription</Link>
+          </>
+        )}
+      </div>
+    </nav>
+  )
+}
