@@ -122,7 +122,13 @@ public class SpecialisteService {
     }
 
     private boolean contient(String texte, String recherche) {
-        return texte != null && texte.toLowerCase().contains(recherche.toLowerCase());
+        return texte != null && normaliser(texte).contains(normaliser(recherche));
+    }
+
+    private String normaliser(String s) {
+        return java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
     }
 
     private void appliquer(Specialiste s, SpecialisteRequest req) {
