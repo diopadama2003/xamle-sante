@@ -18,7 +18,9 @@ export default function ConnexionPage() {
     try {
       const { data } = await api.post('/auth/login', { email, motDePasse })
       connecter(data)
-      navigate(data.role === 'PROFESSIONNEL' ? '/pro' : '/')
+      if (data.role === 'PROFESSIONNEL') navigate('/pro')
+else if (data.role === 'MODERATEUR' || data.role === 'ADMIN_SANTE') navigate('/moderation')
+else navigate('/')
     } catch (err) {
       if (err.response?.status === 401) {
         setErreur('Email ou mot de passe incorrect')

@@ -138,3 +138,35 @@
   color: #666;
   margin: 0;
 }
+.formulaire.large {
+  max-width: 640px;
+}
+
+.carte-profil {
+  border: 1px solid #dde5e2;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.carte-profil .detail {
+  font-size: 13px;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.actions .bouton {
+  flex: 1;
+  padding: 10px;
+}
+
+.bouton.danger {
+  background: #b53a2d;
+}

@@ -5,6 +5,7 @@ import CartePage from './pages/CartePage'
 import ConnexionPage from './pages/ConnexionPage'
 import InscriptionPage from './pages/InscriptionPage'
 import EspacePro from './pages/EspacePro'
+import ModerationPage from './pages/ModerationPage'
 import './App.css'
 
 export default function App() {
@@ -20,6 +21,14 @@ export default function App() {
           element={
             <RouteProtegee roles={['PROFESSIONNEL']}>
               <EspacePro />
+            </RouteProtegee>
+          }
+        />
+        <Route
+          path="/moderation"
+          element={
+            <RouteProtegee roles={['MODERATEUR', 'ADMIN_SANTE']}>
+              <ModerationPage />
             </RouteProtegee>
           }
         />

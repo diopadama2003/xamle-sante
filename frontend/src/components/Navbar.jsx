@@ -3,12 +3,14 @@ import { useAuth } from '../AuthContext'
 
 export default function Navbar() {
   const { user, deconnecter } = useAuth()
+  const peutModerer = user?.role === 'MODERATEUR' || user?.role === 'ADMIN_SANTE'
 
   return (
     <nav className="navbar">
       <Link to="/">Xamlé Santé</Link>
       <div className="navbar-liens">
         {user?.role === 'PROFESSIONNEL' && <Link to="/pro">Mon profil</Link>}
+        {peutModerer && <Link to="/moderation">Modération</Link>}
         {user ? (
           <>
             <span>{user.prenom}</span>
