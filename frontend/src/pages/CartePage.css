@@ -79,3 +79,26 @@
   color: #0b7a5a;
   font-weight: 600;
 }
+
+@media (max-width: 480px) {
+  .panneau {
+    top: 6px;
+    left: 6px;
+    width: calc(100% - 12px);
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .panneau input[type='text'],
+  .panneau select {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .resultats {
+    bottom: 6px;
+    left: 6px;
+    width: calc(100% - 64px);
+    max-height: 22vh;
+  }
+}

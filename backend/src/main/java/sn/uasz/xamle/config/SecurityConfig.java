@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/api/health",
                                 "/api/auth/**",
                                 "/api/sos/**",
+                                "/api/signalements/**",
                                 "/error"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET,

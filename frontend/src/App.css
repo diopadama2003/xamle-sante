@@ -230,3 +230,63 @@
   color: #0b7a5a;
   font-weight: 600;
 }
+
+.panneau select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+a.btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navbar-liens {
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 72%;
+}
+
+@media (max-width: 480px) {
+  .navbar > a {
+    white-space: nowrap;
+    font-size: 15px;
+    margin-right: 8px;
+  }
+
+  .navbar-liens {
+    flex: 1;
+    max-width: none;
+    justify-content: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    scrollbar-width: none;
+  }
+
+  .navbar-liens::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lien-sos {
+    padding: 4px 8px;
+  }
+
+  .page {
+    padding: 8px;
+  }
+
+  .formulaire {
+    padding: 12px;
+  }
+
+  .sos-bouton {
+    width: 130px;
+    height: 130px;
+    font-size: 30px;
+  }
+}

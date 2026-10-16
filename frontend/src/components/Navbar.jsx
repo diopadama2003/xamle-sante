@@ -12,6 +12,7 @@ export default function Navbar() {
         <Link to="/sos" className="lien-sos">
           SOS
         </Link>
+        <Link to="/chaleur">Alertes</Link>
         {user?.role === 'PROFESSIONNEL' && <Link to="/pro">Mon profil</Link>}
         {peutModerer && <Link to="/moderation">Modération</Link>}
         {user ? (
