@@ -6,6 +6,7 @@ import ConnexionPage from './pages/ConnexionPage'
 import InscriptionPage from './pages/InscriptionPage'
 import EspacePro from './pages/EspacePro'
 import ModerationPage from './pages/ModerationPage'
+import SosPage from './pages/SosPage'
 import './App.css'
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<CartePage />} />
+        <Route path="/sos" element={<SosPage />} />
         <Route path="/connexion" element={<ConnexionPage />} />
         <Route path="/inscription" element={<InscriptionPage />} />
         <Route

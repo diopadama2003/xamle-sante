@@ -43,9 +43,9 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api/health",
                                 "/api/auth/**",
+                                "/api/sos/**",
                                 "/error"
                         ).permitAll()
-                        // La consultation de l'annuaire sera publique
                         .requestMatchers(HttpMethod.GET,
                                 "/api/specialistes/**",
                                 "/api/etablissements/**").permitAll()

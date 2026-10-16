@@ -9,6 +9,9 @@ export default function Navbar() {
     <nav className="navbar">
       <Link to="/">Xamlé Santé</Link>
       <div className="navbar-liens">
+        <Link to="/sos" className="lien-sos">
+          SOS
+        </Link>
         {user?.role === 'PROFESSIONNEL' && <Link to="/pro">Mon profil</Link>}
         {peutModerer && <Link to="/moderation">Modération</Link>}
         {user ? (
