@@ -290,3 +290,23 @@ a.btn {
     font-size: 30px;
   }
 }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #e6f6ee;
+  color: #0b6b4a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.formulaire textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: inherit;
+}

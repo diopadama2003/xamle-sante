@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/sos/**",
                                 "/api/signalements/**",
+                                "/api/campagnes/**",
                                 "/error"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET,

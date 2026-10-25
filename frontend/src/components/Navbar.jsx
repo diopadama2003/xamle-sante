@@ -13,8 +13,10 @@ export default function Navbar() {
           SOS
         </Link>
         <Link to="/chaleur">Alertes</Link>
+        <Link to="/agenda">Agenda</Link>
         {user?.role === 'PROFESSIONNEL' && <Link to="/pro">Mon profil</Link>}
         {peutModerer && <Link to="/moderation">Modération</Link>}
+        {user?.role === 'ADMIN_SANTE' && <Link to="/admin/campagnes">Campagnes</Link>}
         {user ? (
           <>
             <span>{user.prenom}</span>
