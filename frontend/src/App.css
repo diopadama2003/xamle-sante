@@ -310,3 +310,74 @@ a.btn {
   font-size: 16px;
   font-family: inherit;
 }
+
+a.bouton {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.statut {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statut.CONFIRME {
+  background: #e6f6ee;
+  color: #0b6b4a;
+}
+
+.statut.EN_ATTENTE_PAIEMENT {
+  background: #fff6e0;
+  color: #8a5a00;
+}
+
+.statut.ANNULE {
+  background: #fee;
+  color: #a33;
+}
+
+.statut.LIBRE {
+  background: #e8eef0;
+  color: #333;
+}
+
+.creneaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.creneaux .bouton {
+  flex: 1 1 140px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.wave-carte {
+  border: 1px solid #bfe6f7;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.wave-entete {
+  background: #1dc8ff;
+  color: #fff;
+  padding: 12px;
+  font-weight: 700;
+}
+
+.wave-corps {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wave-montant {
+  font-size: 28px;
+  font-weight: 700;
+}

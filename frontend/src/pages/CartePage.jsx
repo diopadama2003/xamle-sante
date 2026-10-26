@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   MapContainer,
   TileLayer,
@@ -243,6 +244,8 @@ export default function CartePage() {
                   {s.distanceKm.toFixed(1)} km
                 </>
               )}
+              <br />
+              <Link to={`/rdv/${s.id}`}>Prendre rendez-vous</Link>
             </Popup>
           </Marker>
         ))}
@@ -265,6 +268,11 @@ export default function CartePage() {
             {s.distanceKm != null && (
               <span className="dist"> · {s.distanceKm.toFixed(1)} km</span>
             )}
+            <div>
+              <Link to={`/rdv/${s.id}`} onClick={(e) => e.stopPropagation()}>
+                Prendre rendez-vous
+              </Link>
+            </div>
           </div>
         ))}
       </div>
