@@ -381,3 +381,112 @@ a.bouton {
   font-size: 28px;
   font-weight: 700;
 }
+
+.formulaire.xlarge {
+  max-width: 920px;
+}
+
+.formulaire h3 {
+  margin: 12px 0 0;
+}
+
+.outils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.outils label {
+  flex: 1 1 200px;
+}
+
+.outils .bouton {
+  flex: 0 0 auto;
+}
+
+.cartes-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.carte-stat {
+  background: #f4f7f6;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.carte-stat-valeur {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0b7a5a;
+}
+
+.carte-stat-libelle {
+  font-size: 12px;
+  color: #555;
+}
+
+.barre-ligne {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.barre-nom {
+  flex: 0 0 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barre-fond {
+  flex: 1;
+  background: #e8eef0;
+  border-radius: 4px;
+  height: 14px;
+}
+
+.barre {
+  height: 100%;
+  background: #0b7a5a;
+  border-radius: 4px;
+}
+
+.barre-valeur {
+  flex: 0 0 28px;
+  text-align: right;
+  font-weight: 600;
+}
+
+.evolution {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 100px;
+  border-bottom: 1px solid #ccc;
+}
+
+.evolution-barre {
+  flex: 1;
+  min-height: 2px;
+  background: #0b7a5a;
+  border-radius: 2px 2px 0 0;
+}
+
+.evolution-legende {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+}
+
+@media (max-width: 480px) {
+  .barre-nom {
+    flex-basis: 90px;
+  }
+}

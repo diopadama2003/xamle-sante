@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface SpecialisteRepository extends JpaRepository<Specialiste, Long> {
     List<Specialiste> findByStatut(StatutValidation statut);
     Optional<Specialiste> findByUtilisateurEmail(String email);
+    long countByStatut(StatutValidation statut);
 }

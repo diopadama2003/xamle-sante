@@ -21,4 +21,6 @@ public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
     List<RendezVous> findByStatutAndDateCreationBefore(StatutRendezVous statut, LocalDateTime date);
 
     boolean existsByCreneauId(Long creneauId);
+
+    long countByStatut(StatutRendezVous statut);
 }

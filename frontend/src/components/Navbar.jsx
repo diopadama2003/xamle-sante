@@ -26,6 +26,7 @@ export default function Navbar() {
         {user?.role === 'PROFESSIONNEL' && <Link to="/pro/agenda">Mes RDV</Link>}
         {peutModerer && <Link to="/moderation">Modération</Link>}
         {user?.role === 'ADMIN_SANTE' && <Link to="/admin/campagnes">Campagnes</Link>}
+        {user?.role === 'ADMIN_SANTE' && <Link to="/admin/tableau-de-bord">Tableau de bord</Link>}
         {user ? (
           <>
             <span>{user.prenom}</span>

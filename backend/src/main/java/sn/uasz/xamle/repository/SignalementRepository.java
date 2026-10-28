@@ -10,4 +10,5 @@ import java.util.List;
 public interface SignalementRepository extends JpaRepository<Signalement, Long> {
     List<Signalement> findByStatut(StatutValidation statut);
     List<Signalement> findByStatutAndDateCreationAfter(StatutValidation statut, LocalDateTime date);
+    long countByStatut(StatutValidation statut);
 }
