@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   MapContainer,
   TileLayer,
@@ -56,7 +56,8 @@ export default function CartePage() {
   const [erreur, setErreur] = useState('')
   const [message, setMessage] = useState('')
 
-  const [specialite, setSpecialite] = useState('')
+  const [params] = useSearchParams()
+const [specialite, setSpecialite] = useState(params.get('specialite') || '')
   const [langue, setLangue] = useState('')
   const [disponible, setDisponible] = useState(false)
   const [urgences, setUrgences] = useState(false)

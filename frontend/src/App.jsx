@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import RouteProtegee from './components/RouteProtegee'
+import HomePage from './pages/HomePage'
 import CartePage from './pages/CartePage'
 import ConnexionPage from './pages/ConnexionPage'
 import InscriptionPage from './pages/InscriptionPage'
@@ -23,7 +24,8 @@ export default function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<CartePage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/annuaire" element={<CartePage />} />
         <Route path="/sos" element={<SosPage />} />
         <Route path="/chaleur" element={<ChaleurPage />} />
         <Route path="/signaler" element={<SignalerPage />} />
