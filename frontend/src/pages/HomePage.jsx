@@ -98,7 +98,8 @@ export default function HomePage() {
 
   return (
     <div className="page accueil">
-      <header className="acc-hero">
+           <header className="acc-hero">
+        <div className="acc-hero-photo" aria-hidden="true" />
         <div className="acc-conteneur acc-hero-grille">
           <div>
             <h1>Votre santé, plus proche à Ziguinchor</h1>
@@ -129,13 +130,8 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          <div className="acc-hero-visuel" aria-hidden="true">
-            <Illustration />
-          </div>
         </div>
       </header>
-
       <div className="acc-conteneur">
         <div className="acc-urgences">
           <a className="acc-urgence" href="tel:1515">

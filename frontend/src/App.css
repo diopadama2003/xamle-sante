@@ -1284,3 +1284,32 @@ a.bouton {
     font-size: 22px;
   }
 }
+
+.acc-hero {
+  position: relative;
+}
+
+.acc-hero-grille {
+  position: relative;
+  z-index: 1;
+}
+
+.acc-hero-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 58%;
+  background: url('/images/medecins.jpg') center 22% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+}
+
+@media (max-width: 760px) {
+  .acc-hero-photo {
+    width: 100%;
+    opacity: 0.28;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
