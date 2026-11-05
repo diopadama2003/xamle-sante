@@ -18,7 +18,7 @@ import MesRendezVous from './pages/MesRendezVous'
 import AgendaPro from './pages/AgendaPro'
 import DashboardPage from './pages/DashboardPage'
 import './App.css'
-
+import AdminEtablissementsPage from './pages/AdminEtablissementsPage'
 export default function App() {
   return (
     <>
@@ -93,6 +93,14 @@ export default function App() {
           element={
             <RouteProtegee roles={['ADMIN_SANTE']}>
               <DashboardPage />
+            </RouteProtegee>
+          }
+        />
+                <Route
+          path="/admin/etablissements"
+          element={
+            <RouteProtegee roles={['ADMIN_SANTE']}>
+              <AdminEtablissementsPage />
             </RouteProtegee>
           }
         />

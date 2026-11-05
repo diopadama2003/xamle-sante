@@ -1313,3 +1313,26 @@ a.bouton {
     mask-image: none;
   }
 }
+
+.mini-carte {
+  height: 280px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.deux-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.deux-colonnes label {
+  min-width: 0;
+}
+
+.badge.urgence {
+  margin-left: 6px;
+  background: #fdecea;
+  color: #a33;
+}

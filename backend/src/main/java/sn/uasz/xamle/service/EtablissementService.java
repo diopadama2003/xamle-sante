@@ -9,6 +9,7 @@ import sn.uasz.xamle.dto.EtablissementResponse;
 import sn.uasz.xamle.model.Etablissement;
 import sn.uasz.xamle.model.TypeEtablissement;
 import sn.uasz.xamle.repository.EtablissementRepository;
+import sn.uasz.xamle.repository.SpecialisteRepository;
 import sn.uasz.xamle.util.DistanceUtil;
 
 import java.util.Comparator;
@@ -19,6 +20,7 @@ import java.util.List;
 public class EtablissementService {
 
     private final EtablissementRepository repo;
+    private final SpecialisteRepository specialistes;
 
     public List<EtablissementResponse> rechercher(TypeEtablissement type, Boolean urgence,
                                                   Double lat, Double lng, Double rayonKm) {
@@ -62,7 +64,12 @@ public class EtablissementService {
     }
 
     public void supprimer(Long id) {
-        repo.delete(chercher(id));
+        Etablissement e = chercher(id);
+        if (specialistes.existsByEtablissementId(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cet établissement est rattaché à des spécialistes");
+        }
+        repo.delete(e);
     }
 
     private Etablissement chercher(Long id) {

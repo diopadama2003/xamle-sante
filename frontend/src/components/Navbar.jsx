@@ -40,6 +40,9 @@ export default function Navbar() {
         {user?.role === 'ADMIN_SANTE' && (
           <NavLink to="/admin/tableau-de-bord">Tableau de bord</NavLink>
         )}
+                {user?.role === 'ADMIN_SANTE' && (
+          <NavLink to="/admin/etablissements">Établissements</NavLink>
+        )}
 
         <span className="nav-espace" />
 
