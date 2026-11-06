@@ -1336,3 +1336,202 @@ a.bouton {
   background: #fdecea;
   color: #a33;
 }
+
+/* ---------- Mise en page : barre fixe, contenu, pied de page ---------- */
+#root {
+  height: auto;
+  min-height: 100%;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 52px;
+  box-sizing: border-box;
+  background: #f4f7f6;
+}
+
+.contenu {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenu > * {
+  flex: 1 0 auto;
+}
+
+.page {
+  position: static;
+  overflow: visible;
+}
+
+.carte-pleine {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  height: calc(100vh - 52px);
+  height: calc(100dvh - 52px);
+  min-height: 520px;
+}
+
+/* ---------- Marqueur des établissements et légende ---------- */
+.marqueur-etab {
+  background: transparent;
+  border: none;
+}
+
+.marqueur-etab span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: #0b7a5a;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.legende {
+  font-size: 13px;
+  color: #44564f;
+}
+
+.legende-spec {
+  color: #2a81cb;
+}
+
+.legende-etab {
+  color: #0b7a5a;
+}
+
+/* ---------- Page publique des établissements ---------- */
+.etab-conteneur {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.etab-conteneur h1 {
+  margin: 4px 0 6px;
+  font-size: 28px;
+  color: #0a4f3b;
+}
+
+.etab-sous {
+  margin: 0 0 16px;
+  color: #5b6b66;
+}
+
+.etab-filtres {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(10, 79, 59, 0.09);
+}
+
+.etab-filtres input[type='text'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #ccd9d4;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 14px;
+  border: 1px solid #cfe0d9;
+  border-radius: 999px;
+  background: #fff;
+  color: #0b7a5a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chip span {
+  margin-left: 4px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.chip.actif {
+  border-color: #0b7a5a;
+  background: #0b7a5a;
+  color: #fff;
+}
+
+.chip:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.etab-info {
+  margin: 0;
+  font-size: 13px;
+  color: #5b6b66;
+}
+
+.etab-vide {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fff;
+  color: #44564f;
+}
+
+.etab-liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.etab-carte {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(10, 79, 59, 0.09);
+}
+
+.etab-carte h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #0a4f3b;
+}
+
+.etab-carte p {
+  margin: 0;
+  font-size: 14px;
+  color: #44564f;
+}
+
+.etab-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etab-badges .badge.urgence {
+  background: #fdecea;
+  color: #a33;
+}

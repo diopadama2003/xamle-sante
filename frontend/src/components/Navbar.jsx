@@ -27,21 +27,26 @@ export default function Navbar() {
           Accueil
         </NavLink>
         <NavLink to="/annuaire">Annuaire</NavLink>
+        <NavLink to="/etablissements">Établissements</NavLink>
         <NavLink to="/sos" className="nav-sos">
           SOS
         </NavLink>
         <NavLink to="/chaleur">Alertes</NavLink>
         <NavLink to="/agenda">Agenda</NavLink>
         {user?.role === 'PATIENT' && <NavLink to="/rendez-vous">Mes RDV</NavLink>}
-        {user?.role === 'PROFESSIONNEL' && <NavLink to="/pro" end>Mon profil</NavLink>}
+        {user?.role === 'PROFESSIONNEL' && (
+          <NavLink to="/pro" end>
+            Mon profil
+          </NavLink>
+        )}
         {user?.role === 'PROFESSIONNEL' && <NavLink to="/pro/agenda">Mes RDV</NavLink>}
         {peutModerer && <NavLink to="/moderation">Modération</NavLink>}
         {user?.role === 'ADMIN_SANTE' && <NavLink to="/admin/campagnes">Campagnes</NavLink>}
         {user?.role === 'ADMIN_SANTE' && (
           <NavLink to="/admin/tableau-de-bord">Tableau de bord</NavLink>
         )}
-                {user?.role === 'ADMIN_SANTE' && (
-          <NavLink to="/admin/etablissements">Établissements</NavLink>
+        {user?.role === 'ADMIN_SANTE' && (
+          <NavLink to="/admin/etablissements">Gérer établissements</NavLink>
         )}
 
         <span className="nav-espace" />

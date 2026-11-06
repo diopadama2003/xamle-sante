@@ -72,7 +72,7 @@ export default function ChaleurPage() {
   }, [symptome, jours])
 
   return (
-    <div style={{ position: 'fixed', top: 52, left: 0, right: 0, bottom: 0 }}>
+    <div className="carte-pleine">
       <div className="panneau">
         <strong>Carte de chaleur épidémiologique</strong>
         <select value={symptome} onChange={(e) => setSymptome(e.target.value)}>

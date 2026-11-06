@@ -51,16 +51,14 @@ function RecentrerSur({ cible }) {
 }
 
 export default function CartePage() {
-  const [etablissements, setEtablissements] = useState([])
+  const [params] = useSearchParams()
   const [specialistes, setSpecialistes] = useState([])
   const [erreur, setErreur] = useState('')
   const [message, setMessage] = useState('')
 
-  const [params] = useSearchParams()
-const [specialite, setSpecialite] = useState(params.get('specialite') || '')
+  const [specialite, setSpecialite] = useState(params.get('specialite') || '')
   const [langue, setLangue] = useState('')
   const [disponible, setDisponible] = useState(false)
-  const [urgences, setUrgences] = useState(false)
 
   const [position, setPosition] = useState(null)
   const [cible, setCible] = useState(null)
@@ -69,29 +67,20 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
   useEffect(() => {
     let annule = false
     const t = setTimeout(() => {
-      const paramsS = {}
-      if (specialite) paramsS.specialite = specialite
-      if (langue) paramsS.langue = langue
-      if (disponible) paramsS.disponible = true
-
-      const paramsE = {}
-      if (urgences) paramsE.urgence = true
-
+      const p = {}
+      if (specialite) p.specialite = specialite
+      if (langue) p.langue = langue
+      if (disponible) p.disponible = true
       if (position) {
-        paramsS.lat = position[0]
-        paramsS.lng = position[1]
-        paramsE.lat = position[0]
-        paramsE.lng = position[1]
+        p.lat = position[0]
+        p.lng = position[1]
       }
 
-      Promise.all([
-        api.get('/specialistes', { params: paramsS }),
-        api.get('/etablissements', { params: paramsE }),
-      ])
-        .then(([s, e]) => {
+      api
+        .get('/specialistes', { params: p })
+        .then(({ data }) => {
           if (annule) return
-          setSpecialistes(s.data)
-          setEtablissements(e.data)
+          setSpecialistes(data)
           setErreur('')
         })
         .catch(() => {
@@ -103,7 +92,7 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
       annule = true
       clearTimeout(t)
     }
-  }, [specialite, langue, disponible, urgences, position])
+  }, [specialite, langue, disponible, position])
 
   function autourDeMoi() {
     if (!navigator.geolocation) {
@@ -135,7 +124,7 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
   }
 
   return (
-    <div style={{ position: 'fixed', top: 52, left: 0, right: 0, bottom: 0 }}>
+    <div className="carte-pleine">
       <div className="panneau">
         <input
           type="text"
@@ -158,14 +147,6 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
             />{' '}
             Disponible
           </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={urgences}
-              onChange={(e) => setUrgences(e.target.checked)}
-            />{' '}
-            Urgences
-          </label>
         </div>
         <div className="ligne">
           <button className="btn" onClick={autourDeMoi}>
@@ -180,6 +161,9 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
             </button>
           )}
         </div>
+        <Link className="btn secondaire" to="/etablissements">
+          Chercher un établissement
+        </Link>
         {message && <div className="msg">{message}</div>}
         {erreur && <div className="msg">{erreur}</div>}
       </div>
@@ -208,25 +192,6 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
           </CircleMarker>
         )}
 
-        {etablissements.map((e) => (
-          <Marker key={`e-${e.id}`} position={[e.latitude, e.longitude]}>
-            <Popup>
-              <strong>{e.nom}</strong>
-              <br />
-              {e.type}
-              {e.urgence && ' · Urgences'}
-              <br />
-              {e.horaires}
-              {e.distanceKm != null && (
-                <>
-                  <br />
-                  {e.distanceKm.toFixed(1)} km
-                </>
-              )}
-            </Popup>
-          </Marker>
-        ))}
-
         {specialistes.map((s) => (
           <Marker key={`s-${s.id}`} position={[s.latitude, s.longitude]}>
             <Popup>
@@ -253,22 +218,14 @@ const [specialite, setSpecialite] = useState(params.get('specialite') || '')
       </MapContainer>
 
       <div className="resultats">
-        {specialistes.length === 0 && (
-          <div className="resultat">Aucun spécialiste trouvé</div>
-        )}
+        {specialistes.length === 0 && <div className="resultat">Aucun spécialiste trouvé</div>}
         {specialistes.map((s) => (
-          <div
-            key={s.id}
-            className="resultat"
-            onClick={() => setCible([s.latitude, s.longitude])}
-          >
+          <div key={s.id} className="resultat" onClick={() => setCible([s.latitude, s.longitude])}>
             <strong>
               Dr {s.prenom} {s.nom}
             </strong>{' '}
             · {s.specialite}
-            {s.distanceKm != null && (
-              <span className="dist"> · {s.distanceKm.toFixed(1)} km</span>
-            )}
+            {s.distanceKm != null && <span className="dist"> · {s.distanceKm.toFixed(1)} km</span>}
             <div>
               <Link to={`/rdv/${s.id}`} onClick={(e) => e.stopPropagation()}>
                 Prendre rendez-vous

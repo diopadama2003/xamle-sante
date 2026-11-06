@@ -111,7 +111,7 @@ export default function AdminEtablissementsPage() {
   }
 
   function remonter() {
-    document.querySelector('.page')?.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function modifier(e) {
