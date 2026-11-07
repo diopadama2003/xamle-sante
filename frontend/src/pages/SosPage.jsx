@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import api from '../api'
-
+import { distanceKm } from '../distance'
 const NUMEROS = [
   { nom: 'SAMU', numero: '1515' },
   { nom: 'Pompiers', numero: '18' },
@@ -28,8 +28,24 @@ export default function SosPage() {
       setEtat('pret')
       setErreur('')
     } catch {
-      setErreur('Impossible de joindre le serveur')
-      setEtat('repos')
+      // Hors-ligne : on se rabat sur la liste en cache, triée par distance
+      try {
+        const { data } = await api.get('/etablissements')
+        const liste = data
+          .filter((e) => e.latitude != null && e.longitude != null)
+          .map((e) => ({ ...e, distanceKm: distanceKm(pos, [e.latitude, e.longitude]) }))
+          .sort((a, b) => a.distanceKm - b.distanceKm)
+          .slice(0, 5)
+        setUrgences(liste)
+        setPosition(pos)
+        setEtat('pret')
+        setErreur(
+          'Mode hors-ligne : établissements les plus proches (liste enregistrée). Utilise les numéros d\'urgence ci-dessus.',
+        )
+      } catch {
+        setErreur("Pas de connexion. Appelle directement un numéro d'urgence.")
+        setEtat('repos')
+      }
     }
   }
 

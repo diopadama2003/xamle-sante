@@ -1535,3 +1535,34 @@ a.bouton {
   background: #fdecea;
   color: #a33;
 }
+
+.bandeau-pwa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.bandeau-pwa.hors-ligne {
+  background: #b45309;
+  color: #fff;
+}
+.bandeau-pwa.installer {
+  background: #e6f4ef;
+  color: #0b5c44;
+}
+.bandeau-pwa button {
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  background: #0b7a5a;
+  color: #fff;
+  cursor: pointer;
+}
+.bandeau-pwa .fermer {
+  background: transparent;
+  color: inherit;
+  padding: 4px 8px;
+}

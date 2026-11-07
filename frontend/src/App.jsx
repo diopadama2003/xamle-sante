@@ -22,7 +22,7 @@ import MesRendezVous from './pages/MesRendezVous'
 import AgendaPro from './pages/AgendaPro'
 import DashboardPage from './pages/DashboardPage'
 import './App.css'
-
+import BandeauPwa from './components/BandeauPwa'
 // Remet la page en haut à chaque changement de page
 function RemonterEnHaut() {
   const { pathname } = useLocation()
@@ -43,6 +43,7 @@ export default function App() {
     <div className="app">
       <RemonterEnHaut />
       <Navbar />
+      <BandeauPwa />
       <main className="contenu">
         <Routes>
           <Route path="/" element={<HomePage />} />
