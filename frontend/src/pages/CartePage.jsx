@@ -181,9 +181,11 @@ export default function CartePage() {
     setDisponible(false)
   }
 
-  function choisir(s) {
+   function choisir(s) {
     setSelection(s.id)
     setCible([s.latitude, s.longitude])
+    // Sur téléphone, on replie le panneau pour laisser voir la carte
+    if (window.innerWidth <= 700) setOuvert(false)
   }
 
   const filtresActifs = specialite || langue || disponible
