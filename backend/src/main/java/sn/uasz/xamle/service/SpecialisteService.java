@@ -147,7 +147,6 @@ public class SpecialisteService {
         s.setTelephone(req.telephone());
         s.setHoraires(req.horaires());
         s.setLangues(req.langues());
-        s.setPhotoUrl(req.photoUrl());
         s.setDisponible(req.disponible());
     }
 }

@@ -54,6 +54,22 @@ const CHEMINS = {
       <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
     </>
   ),
+
+    chevron: <polyline points="9 18 15 12 9 6" />,
+  hopital: (
+    <>
+      <path d="M3 21h18" />
+      <path d="M5 21V7l7-4 7 4v14" />
+      <path d="M12 9v6" />
+      <path d="M9 12h6" />
+    </>
+  ),
+  camera: (
+    <>
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </>
+  ),
   bouclier: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
   pouls: <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
   fleche: (

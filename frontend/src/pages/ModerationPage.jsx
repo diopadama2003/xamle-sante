@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
 import { libelleSymptome } from '../symptomes'
+import AvatarMedecin from '../components/AvatarMedecin'
 
 export default function ModerationPage() {
   const { deconnecter } = useAuth()
@@ -87,6 +88,9 @@ export default function ModerationPage() {
 
         {profils.map((p) => (
           <div key={p.id} className="carte-profil">
+                        <div style={{ marginBottom: 8 }}>
+              <AvatarMedecin medecin={p} taille={64} />
+            </div>
             <div>
               <strong>
                 Dr {p.prenom} {p.nom}

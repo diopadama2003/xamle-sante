@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
   MapContainer,
@@ -14,7 +14,10 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import api from '../api'
+import Icone from '../components/Icone'
+import AvatarMedecin from '../components/AvatarMedecin'
 import './CartePage.css'
+import '../annuaire.css'
 
 // Correction des icônes Leaflet avec Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -25,6 +28,23 @@ L.Icon.Default.mergeOptions({
 })
 
 const ZIGUINCHOR = [12.5833, -16.2719]
+
+const norm = (t) =>
+  (t || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+
+// Valeurs distinctes (sans tenir compte des accents ni de la casse), triées
+function uniques(valeurs) {
+  const vues = new Map()
+  valeurs.forEach((v) => {
+    const t = (v || '').trim()
+    if (t && !vues.has(norm(t))) vues.set(norm(t), t)
+  })
+  return [...vues.values()].sort((a, b) => a.localeCompare(b, 'fr'))
+}
 
 // Force Leaflet à se remesurer quand la taille de la carte change
 function AjusterTaille() {
@@ -52,6 +72,7 @@ function RecentrerSur({ cible }) {
 
 export default function CartePage() {
   const [params] = useSearchParams()
+  const [toutes, setToutes] = useState([])
   const [specialistes, setSpecialistes] = useState([])
   const [erreur, setErreur] = useState('')
   const [message, setMessage] = useState('')
@@ -62,6 +83,37 @@ export default function CartePage() {
 
   const [position, setPosition] = useState(null)
   const [cible, setCible] = useState(null)
+  const [selection, setSelection] = useState(null)
+  const [ouvert, setOuvert] = useState(() => window.innerWidth > 700)
+
+  // Liste complète, une seule fois : elle sert à remplir les menus de choix
+  useEffect(() => {
+    api
+      .get('/specialistes')
+      .then(({ data }) => setToutes(data))
+      .catch(() => {})
+  }, [])
+
+  const specialites = useMemo(() => uniques(toutes.map((s) => s.specialite)), [toutes])
+  const langues = useMemo(
+    () => uniques(toutes.flatMap((s) => (s.langues || '').split(','))),
+    [toutes],
+  )
+
+  // Une spécialité venue de l'accueil (« pediatre ») est alignée sur le menu (« Pédiatre »)
+  useEffect(() => {
+    if (!specialite || specialites.length === 0) return
+    const exacte = specialites.find((o) => norm(o) === norm(specialite))
+    if (exacte && exacte !== specialite) setSpecialite(exacte)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [specialites])
+
+  const optionsSpecialite =
+    specialite && !specialites.some((o) => o === specialite)
+      ? [specialite, ...specialites]
+      : specialites
+  const optionsLangue =
+    langue && !langues.some((o) => o === langue) ? [langue, ...langues] : langues
 
   // Recharge les résultats quand un filtre ou la position change
   useEffect(() => {
@@ -96,7 +148,7 @@ export default function CartePage() {
 
   function autourDeMoi() {
     if (!navigator.geolocation) {
-      setMessage("La géolocalisation n'est pas disponible sur cet appareil")
+      setMessage("La géolocalisation n'est pas disponible sur cet appareil.")
       return
     }
     setMessage('Localisation en cours...')
@@ -107,12 +159,12 @@ export default function CartePage() {
         setCible(pos)
         setMessage('')
       },
-      () => setMessage('Position refusée ou indisponible'),
+      () => setMessage("Position refusée ou indisponible. Essaie « Centre de Ziguinchor »."),
       { enableHighAccuracy: true, timeout: 8000 },
     )
   }
 
-  function positionTest() {
+  function centreVille() {
     setPosition(ZIGUINCHOR)
     setCible(ZIGUINCHOR)
     setMessage('')
@@ -123,49 +175,177 @@ export default function CartePage() {
     setMessage('')
   }
 
+  function reinitialiser() {
+    setSpecialite('')
+    setLangue('')
+    setDisponible(false)
+  }
+
+  function choisir(s) {
+    setSelection(s.id)
+    setCible([s.latitude, s.longitude])
+  }
+
+  const filtresActifs = specialite || langue || disponible
+  const n = specialistes.length
+
   return (
     <div className="carte-pleine">
-      <div className="panneau">
-        <input
-          type="text"
-          placeholder="Spécialité (ex : pédiatre)"
-          value={specialite}
-          onChange={(e) => setSpecialite(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Langue (ex : wolof)"
-          value={langue}
-          onChange={(e) => setLangue(e.target.value)}
-        />
-        <div className="ligne">
-          <label>
-            <input
-              type="checkbox"
-              checked={disponible}
-              onChange={(e) => setDisponible(e.target.checked)}
-            />{' '}
-            Disponible
-          </label>
-        </div>
-        <div className="ligne">
-          <button className="btn" onClick={autourDeMoi}>
-            Autour de moi
+      <div className="ann-lateral">
+        <section className="ann-carte">
+          <button
+            type="button"
+            className="ann-entete"
+            onClick={() => setOuvert((o) => !o)}
+            aria-expanded={ouvert}
+          >
+            <span className="ann-entete-icone">
+              <Icone nom="pin" taille={20} />
+            </span>
+            <span className="ann-entete-texte">
+              <strong>Trouver un médecin</strong>
+              <small>Par spécialité, langue ou distance</small>
+            </span>
+            <span className={`ann-chevron ${ouvert ? 'ouvert' : ''}`}>
+              <Icone nom="chevron" taille={18} />
+            </span>
           </button>
-          <button className="btn secondaire" onClick={positionTest}>
-            Centre-ville (test)
-          </button>
-          {position && (
-            <button className="btn secondaire" onClick={effacerPosition}>
-              Effacer
-            </button>
+
+          {ouvert && (
+            <div className="ann-corps">
+              <label className="ann-champ">
+                <span>Spécialité</span>
+                <select value={specialite} onChange={(e) => setSpecialite(e.target.value)}>
+                  <option value="">Toutes les spécialités</option>
+                  {optionsSpecialite.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="ann-champ">
+                <span>Langue parlée</span>
+                <select value={langue} onChange={(e) => setLangue(e.target.value)}>
+                  <option value="">Toutes les langues</option>
+                  {optionsLangue.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="ann-case">
+                <input
+                  type="checkbox"
+                  checked={disponible}
+                  onChange={(e) => setDisponible(e.target.checked)}
+                />
+                Médecins disponibles uniquement
+              </label>
+
+              <div className="ann-actions">
+                <button type="button" className="ann-btn principal" onClick={autourDeMoi}>
+                  <Icone nom="pin" taille={18} /> Autour de moi
+                </button>
+                <button type="button" className="ann-btn contour" onClick={centreVille}>
+                  Centre de Ziguinchor
+                </button>
+              </div>
+
+              {(position || filtresActifs) && (
+                <div className="ann-liens">
+                  {position && (
+                    <button type="button" className="ann-lien" onClick={effacerPosition}>
+                      Effacer ma position
+                    </button>
+                  )}
+                  {filtresActifs && (
+                    <button type="button" className="ann-lien" onClick={reinitialiser}>
+                      Réinitialiser les filtres
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {message && <div className="ann-msg">{message}</div>}
+              {erreur && <div className="ann-msg erreur">{erreur}</div>}
+
+              <Link className="ann-etab" to="/etablissements">
+                <Icone nom="hopital" taille={18} />
+                <span>Voir les établissements de santé</span>
+                <Icone nom="fleche" taille={16} />
+              </Link>
+            </div>
           )}
-        </div>
-        <Link className="btn secondaire" to="/etablissements">
-          Chercher un établissement
-        </Link>
-        {message && <div className="msg">{message}</div>}
-        {erreur && <div className="msg">{erreur}</div>}
+        </section>
+
+        <section className="ann-carte ann-liste">
+          <div className="ann-liste-tete">
+            <h2>{position ? 'Médecins à proximité' : 'Médecins référencés'}</h2>
+            <span className="ann-compteur">
+              {n} résultat{n > 1 ? 's' : ''}
+            </span>
+          </div>
+
+          {n === 0 && (
+            <p className="ann-vide">Aucun médecin ne correspond à ces critères.</p>
+          )}
+
+          <ul>
+            {specialistes.map((s) => (
+              <li key={s.id}>
+                <button
+                  type="button"
+                  className={`ann-medecin ${selection === s.id ? 'actif' : ''}`}
+                  onClick={() => choisir(s)}
+                >
+                  <AvatarMedecin medecin={s} />
+                  <span className="ann-infos">
+                    <strong>
+                      Dr {s.prenom} {s.nom}
+                    </strong>
+                    <span className="ann-spec">{s.specialite}</span>
+                    {(s.quartier || s.etablissementNom) && (
+                      <span className="ann-meta">
+                        {[s.quartier, s.etablissementNom].filter(Boolean).join(' · ')}
+                      </span>
+                    )}
+                  </span>
+                  <span className="ann-droite">
+                    {s.distanceKm != null && (
+                      <span className="ann-dist">
+                        <Icone nom="pin" taille={14} /> {s.distanceKm.toFixed(1)} km
+                      </span>
+                    )}
+                    <span className={`ann-dispo ${s.disponible ? 'oui' : 'non'}`}>
+                      {s.disponible ? 'Disponible' : 'Indisponible'}
+                    </span>
+                  </span>
+                </button>
+
+                {selection === s.id && (
+                  <div className="ann-detail">
+                    {s.langues && <div>Langues : {s.langues}</div>}
+                    {s.horaires && <div>Horaires : {s.horaires}</div>}
+                    <div className="ann-detail-actions">
+                      <Link className="ann-btn principal" to={`/rdv/${s.id}`}>
+                        Prendre rendez-vous
+                      </Link>
+                      {s.telephone && (
+                        <a className="ann-btn contour" href={`tel:${s.telephone}`}>
+                          Appeler
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
 
       <MapContainer
@@ -193,47 +373,34 @@ export default function CartePage() {
         )}
 
         {specialistes.map((s) => (
-          <Marker key={`s-${s.id}`} position={[s.latitude, s.longitude]}>
+          <Marker
+            key={`s-${s.id}`}
+            position={[s.latitude, s.longitude]}
+            eventHandlers={{ click: () => setSelection(s.id) }}
+          >
             <Popup>
-              <strong>
-                Dr {s.prenom} {s.nom}
-              </strong>
-              <br />
-              {s.specialite}
-              <br />
-              {s.langues}
-              <br />
-              {s.telephone}
-              {s.distanceKm != null && (
-                <>
+              <div className="ann-popup">
+                <AvatarMedecin medecin={s} taille={44} />
+                <div>
+                  <strong>
+                    Dr {s.prenom} {s.nom}
+                  </strong>
                   <br />
-                  {s.distanceKm.toFixed(1)} km
-                </>
-              )}
-              <br />
-              <Link to={`/rdv/${s.id}`}>Prendre rendez-vous</Link>
+                  {s.specialite}
+                  {s.distanceKm != null && (
+                    <>
+                      <br />
+                      {s.distanceKm.toFixed(1)} km
+                    </>
+                  )}
+                  <br />
+                  <Link to={`/rdv/${s.id}`}>Prendre rendez-vous</Link>
+                </div>
+              </div>
             </Popup>
           </Marker>
         ))}
       </MapContainer>
-
-      <div className="resultats">
-        {specialistes.length === 0 && <div className="resultat">Aucun spécialiste trouvé</div>}
-        {specialistes.map((s) => (
-          <div key={s.id} className="resultat" onClick={() => setCible([s.latitude, s.longitude])}>
-            <strong>
-              Dr {s.prenom} {s.nom}
-            </strong>{' '}
-            · {s.specialite}
-            {s.distanceKm != null && <span className="dist"> · {s.distanceKm.toFixed(1)} km</span>}
-            <div>
-              <Link to={`/rdv/${s.id}`} onClick={(e) => e.stopPropagation()}>
-                Prendre rendez-vous
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   )
 }

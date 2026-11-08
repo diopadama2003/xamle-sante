@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
-
+import PhotoProfil from '../components/PhotoProfil'
 const VIDE = {
   nom: '',
   prenom: '',
@@ -134,7 +134,7 @@ export default function EspacePro() {
             Tu n'as pas encore de profil. Remplis le formulaire pour en créer un.
           </div>
         )}
-
+        <PhotoProfil actif={existe} onStatut={setStatut} />
         <label>
           Nom
           <input required value={form.nom} onChange={changer('nom')} />
