@@ -240,9 +240,10 @@ export default function HomePage() {
             <p className="acc-pied-texte">La santé de tous, notre mission à Ziguinchor.</p>
           </div>
           <div>
-            <h4>Liens rapides</h4>
+              <h4>Liens rapides</h4>
             <Link to="/">Accueil</Link>
             <Link to="/annuaire">Annuaire</Link>
+            <Link to="/etablissements">Établissements</Link>
             <Link to="/sos">SOS</Link>
             <Link to="/chaleur">Alertes</Link>
             <Link to="/agenda">Agenda</Link>
@@ -250,9 +251,11 @@ export default function HomePage() {
           <div>
             <h4>Services</h4>
             <Link to="/annuaire">Annuaire médical</Link>
+            <Link to="/etablissements">Établissements de santé</Link>
             <Link to="/sos">Urgences</Link>
             <Link to="/chaleur">Alertes santé</Link>
             <Link to="/signaler">Signaler un symptôme</Link>
+
           </div>
           <div>
             <h4>Nous contacter</h4>
