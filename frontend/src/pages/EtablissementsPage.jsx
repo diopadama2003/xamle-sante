@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from 'react-leaflet'
+import L from 'leaflet'
 import api from '../api'
 
 const ZIGUINCHOR = [12.5833, -16.2719]
@@ -29,6 +31,47 @@ function ouvert24h(e) {
   return /24\s*h?\s*(\/|sur)\s*24/i.test(e.horaires || '')
 }
 
+// Marqueur carré : vert, rouge pour les urgences, agrandi quand il est sélectionné
+function iconeEtab(e, actif) {
+  return L.divIcon({
+    className: `marqueur-etab ${e.urgence ? 'urgence' : ''} ${actif ? 'actif' : ''}`,
+    html: '<span>+</span>',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -14],
+  })
+}
+
+// Force Leaflet à se remesurer quand la taille de la carte change
+function AjusterTaille() {
+  const map = useMap()
+  useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 200)
+    const obs = new ResizeObserver(() => map.invalidateSize())
+    obs.observe(map.getContainer())
+    return () => {
+      clearTimeout(t)
+      obs.disconnect()
+    }
+  }, [map])
+  return null
+}
+
+// Cadre la carte sur les résultats, ou sur l'établissement choisi
+function AjusterVue({ points, cible }) {
+  const map = useMap()
+  useEffect(() => {
+    if (cible) {
+      map.setView(cible, 16)
+    } else if (points.length === 1) {
+      map.setView(points[0], 15)
+    } else if (points.length > 1) {
+      map.fitBounds(points, { padding: [30, 30], maxZoom: 16 })
+    }
+  }, [points, cible, map])
+  return null
+}
+
 export default function EtablissementsPage() {
   const [liste, setListe] = useState([])
   const [chargement, setChargement] = useState(true)
@@ -39,6 +82,9 @@ export default function EtablissementsPage() {
   const [position, setPosition] = useState(null)
   const [info, setInfo] = useState(MSG_CENTRE)
   const [localisation, setLocalisation] = useState(false)
+  const [selection, setSelection] = useState(null)
+  const [cible, setCible] = useState(null)
+  const carteRef = useRef(null)
 
   const reference = position || ZIGUINCHOR
 
@@ -62,6 +108,11 @@ export default function EtablissementsPage() {
       annule = true
     }
   }, [reference])
+
+  // Quand on change de recherche ou de filtre, la carte se recadre sur les résultats
+  useEffect(() => {
+    setCible(null)
+  }, [recherche, groupe, seul24h])
 
   function localiser() {
     if (!navigator.geolocation) {
@@ -99,6 +150,22 @@ export default function EtablissementsPage() {
       return normaliser([e.nom, e.quartier, e.adresse, e.services].join(' ')).includes(q)
     })
   }, [liste, recherche, groupe, seul24h])
+
+  const points = useMemo(() => affichees.map((e) => [e.latitude, e.longitude]), [affichees])
+
+  // Fiche → carte : on remonte vers la carte et on la centre sur l'établissement
+  function voirSurCarte(e) {
+    setSelection(e.id)
+    setCible([e.latitude, e.longitude])
+    if (carteRef.current) carteRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+  // Carte → liste : on fait défiler jusqu'à la fiche
+  function voirDansListe(e) {
+    setSelection(e.id)
+    const fiche = document.getElementById(`etab-${e.id}`)
+    if (fiche) fiche.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 
   return (
     <div className="page">
@@ -147,9 +214,73 @@ export default function EtablissementsPage() {
           <div className="etab-vide">Aucun établissement ne correspond à votre recherche.</div>
         )}
 
+        <div className="etab-map" ref={carteRef}>
+          <MapContainer
+            center={ZIGUINCHOR}
+            zoom={13}
+            scrollWheelZoom={false}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <AjusterTaille />
+            <AjusterVue points={points} cible={cible} />
+            <TileLayer
+              attribution="&copy; contributeurs OpenStreetMap"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {position && (
+              <CircleMarker
+                center={position}
+                radius={9}
+                pathOptions={{ color: '#c0392b', fillColor: '#e74c3c', fillOpacity: 0.8 }}
+              >
+                <Popup>Votre position</Popup>
+              </CircleMarker>
+            )}
+
+            {affichees.map((e) => (
+              <Marker
+                key={e.id}
+                position={[e.latitude, e.longitude]}
+                icon={iconeEtab(e, selection === e.id)}
+                eventHandlers={{ click: () => setSelection(e.id) }}
+              >
+                <Popup>
+                  <strong>{e.nom}</strong>
+                  <br />
+                  {TYPES[e.type]}
+                  {e.distanceKm != null && <> · {e.distanceKm.toFixed(1)} km</>}
+                  <br />
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${e.latitude},${e.longitude}`}
+                  >
+                    Itinéraire
+                  </a>
+                  {' · '}
+                  <a
+                    href={`#etab-${e.id}`}
+                    onClick={(ev) => {
+                      ev.preventDefault()
+                      voirDansListe(e)
+                    }}
+                  >
+                    Voir dans la liste
+                  </a>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
+
         <div className="etab-liste">
           {affichees.map((e) => (
-            <article key={e.id} className="etab-carte">
+            <article
+              key={e.id}
+              id={`etab-${e.id}`}
+              className={`etab-carte ${selection === e.id ? 'selectionnee' : ''}`}
+            >
               <h3>{e.nom}</h3>
               <div className="etab-badges">
                 <span className="badge">{TYPES[e.type]}</span>
@@ -174,6 +305,9 @@ export default function EtablissementsPage() {
                 >
                   Itinéraire
                 </a>
+                <button type="button" className="bouton secondaire" onClick={() => voirSurCarte(e)}>
+                  Voir sur la carte
+                </button>
               </div>
             </article>
           ))}

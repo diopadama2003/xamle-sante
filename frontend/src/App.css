@@ -1566,3 +1566,54 @@ a.bouton {
   color: inherit;
   padding: 4px 8px;
 }
+
+/* ---------- Petite carte de la page Établissements ---------- */
+.etab-map {
+  height: 340px;
+  margin-top: 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 2px 10px rgba(10, 79, 59, 0.09);
+}
+
+.marqueur-etab {
+  background: transparent;
+  border: 0;
+}
+
+.marqueur-etab span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: #0b7a5a;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.marqueur-etab.urgence span {
+  background: #c0392b;
+}
+
+.marqueur-etab.actif span {
+  transform: scale(1.25);
+  outline: 3px solid rgba(11, 122, 90, 0.35);
+}
+
+.etab-carte.selectionnee {
+  outline: 2px solid #0b7a5a;
+}
+
+@media (max-width: 600px) {
+  .etab-map {
+    height: 260px;
+  }
+}
