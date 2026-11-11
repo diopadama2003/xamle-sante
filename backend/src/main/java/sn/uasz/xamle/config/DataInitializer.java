@@ -1,6 +1,7 @@
 package sn.uasz.xamle.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +17,25 @@ public class DataInitializer {
     private final UtilisateurRepository repo;
     private final PasswordEncoder encoder;
 
+    // Les identifiants viennent de la configuration : en production, ce sont des
+    // variables d'environnement (aucun mot de passe n'est ecrit dans le code).
+    @Value("${app.admin.email}")
+    private String emailAdmin;
+
+    @Value("${app.admin.password}")
+    private String motDePasseAdmin;
+
+    @Value("${app.moderateur.email}")
+    private String emailModerateur;
+
+    @Value("${app.moderateur.password}")
+    private String motDePasseModerateur;
+
     @Bean
     CommandLineRunner initComptes() {
         return args -> {
-            creerSiAbsent("admin@xamle.sn", "Admin", "Santé", "Admin@2026", Role.ADMIN_SANTE);
-            creerSiAbsent("moderateur@xamle.sn", "Modérateur", "Médical", "Modo@2026", Role.MODERATEUR);
+            creerSiAbsent(emailAdmin, "Admin", "Santé", motDePasseAdmin, Role.ADMIN_SANTE);
+            creerSiAbsent(emailModerateur, "Modérateur", "Médical", motDePasseModerateur, Role.MODERATEUR);
         };
     }
 

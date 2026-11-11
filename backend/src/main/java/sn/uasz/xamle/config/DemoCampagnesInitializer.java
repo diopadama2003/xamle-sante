@@ -1,6 +1,7 @@
 package sn.uasz.xamle.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +16,18 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class DemoCampagnesInitializer {
 
+    @Value("${app.demo-data:true}")
+    private boolean donneesDemo;
+
     private final CampagneRepository repo;
     private final QuartierCatalogue catalogue;
 
     @Bean
     CommandLineRunner initCampagnesDemo() {
         return args -> {
+            if (!donneesDemo) {
+                return;
+            }
             if (repo.count() > 0) {
                 return;
             }
