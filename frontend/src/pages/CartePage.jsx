@@ -16,6 +16,8 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import api from '../api'
 import Icone from '../components/Icone'
 import AvatarMedecin from '../components/AvatarMedecin'
+import Etoiles from '../components/Etoiles'
+import AvisSection from '../components/AvisSection'
 import './CartePage.css'
 import '../annuaire.css'
 
@@ -85,6 +87,7 @@ export default function CartePage() {
   const [cible, setCible] = useState(null)
   const [selection, setSelection] = useState(null)
   const [ouvert, setOuvert] = useState(() => window.innerWidth > 700)
+    const [version, setVersion] = useState(0)
 
   // Liste complète, une seule fois : elle sert à remplir les menus de choix
   useEffect(() => {
@@ -144,7 +147,7 @@ export default function CartePage() {
       annule = true
       clearTimeout(t)
     }
-  }, [specialite, langue, disponible, position])
+   }, [specialite, langue, disponible, position, version])
 
   function autourDeMoi() {
     if (!navigator.geolocation) {
@@ -310,6 +313,7 @@ export default function CartePage() {
                       Dr {s.prenom} {s.nom}
                     </strong>
                     <span className="ann-spec">{s.specialite}</span>
+                     <Etoiles note={s.noteMoyenne} nombre={s.nombreAvis} petit />
                     {(s.quartier || s.etablissementNom) && (
                       <span className="ann-meta">
                         {[s.quartier, s.etablissementNom].filter(Boolean).join(' · ')}
@@ -332,6 +336,11 @@ export default function CartePage() {
                   <div className="ann-detail">
                     {s.langues && <div>Langues : {s.langues}</div>}
                     {s.horaires && <div>Horaires : {s.horaires}</div>}
+                    <AvisSection
+                      specialisteId={s.id}
+                      nombre={s.nombreAvis}
+                      onChange={() => setVersion((v) => v + 1)}
+                    />
                     <div className="ann-detail-actions">
                       <Link className="ann-btn principal" to={`/rdv/${s.id}`}>
                         Prendre rendez-vous

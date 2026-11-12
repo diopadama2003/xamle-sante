@@ -3,6 +3,7 @@ package sn.uasz.xamle.repository;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sn.uasz.xamle.model.Creneau;
@@ -26,4 +27,8 @@ public interface CreneauRepository extends JpaRepository<Creneau, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select c from Creneau c where c.id = :id")
     Optional<Creneau> findByIdForUpdate(@Param("id") Long id);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from Creneau c where c.specialiste.id = :id")
+    void supprimerDuSpecialiste(@Param("id") Long id);
 }

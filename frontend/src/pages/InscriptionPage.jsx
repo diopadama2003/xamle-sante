@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import IconesFlottantes from '../components/IconesFlottantes'
 
 export default function InscriptionPage() {
   const { connecter } = useAuth()
@@ -40,7 +41,8 @@ export default function InscriptionPage() {
   }
 
   return (
-    <div className="page">
+        <div className="page page-flottant">
+      <IconesFlottantes variante="sur-clair" />
       <form className="formulaire" onSubmit={soumettre}>
         <h2>Créer un compte</h2>
         <label>

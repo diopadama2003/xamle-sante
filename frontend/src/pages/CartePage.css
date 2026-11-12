@@ -35,14 +35,14 @@
   padding: 8px 10px;
   border: none;
   border-radius: 6px;
-  background: #0b7a5a;
+  background: #0b5ed7;
   color: #fff;
   cursor: pointer;
   font-size: 14px;
 }
 
 .btn.secondaire {
-  background: #e8eef0;
+  background: #e3ebf7;
   color: #222;
 }
 
@@ -72,11 +72,11 @@
 }
 
 .resultat:hover {
-  background: #f3f8f6;
+  background: #f2f7ff;
 }
 
 .dist {
-  color: #0b7a5a;
+  color: #0b5ed7;
   font-weight: 600;
 }
 

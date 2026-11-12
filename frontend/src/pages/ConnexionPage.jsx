@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import IconesFlottantes from '../components/IconesFlottantes'
 
 export default function ConnexionPage() {
   const { connecter } = useAuth()
@@ -35,7 +36,8 @@ else navigate('/')
   }
 
   return (
-    <div className="page">
+        <div className="page page-flottant">
+      <IconesFlottantes variante="sur-clair" />
       <form className="formulaire" onSubmit={soumettre}>
         <h2>Connexion</h2>
         <label>

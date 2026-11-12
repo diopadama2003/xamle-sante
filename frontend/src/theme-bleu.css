@@ -1,0 +1,30 @@
+/* ---------- Thème bleu : page d'accueil ---------- */
+.acc-hero {
+  position: relative;
+  color: #0a2f7a;
+  background:
+    radial-gradient(circle at 12% 18%, #ffffff 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(135deg, #d6eaff 0%, #8fc3f7 100%);
+}
+.acc-hero .acc-conteneur {
+  position: relative;
+  z-index: 1;
+}
+.acc-hero h1 {
+  color: #0a2a73;
+}
+.acc-hero p {
+  color: #1f3a6e;
+  opacity: 1;
+}
+.acc-recherche {
+  box-shadow: 0 6px 18px rgba(10, 47, 122, 0.18);
+}
+.acc-btn-rouge {
+  background: #0b4fb3;
+  box-shadow: 0 6px 14px rgba(11, 79, 179, 0.3);
+}
+.acc-urgences {
+  background: #0b5ed7;
+  box-shadow: 0 10px 24px rgba(11, 94, 215, 0.35);
+}

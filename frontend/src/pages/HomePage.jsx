@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import Logo from '../components/Logo'
 import Icone from '../components/Icone'
+import IconesFlottantes from '../components/IconesFlottantes'
 
 const SERVICES = [
   {
@@ -64,10 +65,10 @@ function Illustration() {
       <g transform="translate(240 120)">
         <path
           d="M0 120 C-10 98 -64 66 -64 0 a64 64 0 1 1 128 0 C64 66 10 98 0 120Z"
-          fill="#e8f5ef"
+          fill="#e3f0ff"
         />
-        <circle r="44" fill="#fff" stroke="#0b7a5a" strokeWidth="8" />
-        <path d="M-6 -24h12v18h18v12h-18v18h-12v-18h-18v-12h18z" fill="#0b7a5a" />
+        <circle r="44" fill="#fff" stroke="#0b5ed7" strokeWidth="8" />
+        <path d="M-6 -24h12v18h18v12h-18v18h-12v-18h-18v-12h18z" fill="#0b5ed7" />
       </g>
       <g fill="#ffffff" fillOpacity="0.22">
         <circle cx="95" cy="110" r="20" />
@@ -100,6 +101,7 @@ export default function HomePage() {
     <div className="page accueil">
            <header className="acc-hero">
         <div className="acc-hero-photo" aria-hidden="true" />
+                <IconesFlottantes />
         <div className="acc-conteneur acc-hero-grille">
           <div>
             <h1>Votre santé, plus proche à Ziguinchor</h1>

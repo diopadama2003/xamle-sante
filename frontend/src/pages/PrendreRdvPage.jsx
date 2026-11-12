@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import Etoiles from '../components/Etoiles'
 
 function formater(iso) {
   return new Date(iso).toLocaleString('fr-FR', {
@@ -97,6 +98,7 @@ export default function PrendreRdvPage() {
             </strong>
             <div className="detail">{specialiste.specialite}</div>
             <div className="detail">{specialiste.quartier}</div>
+            <Etoiles note={specialiste.noteMoyenne} nombre={specialiste.nombreAvis} />
           </div>
         )}
 

@@ -7,10 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import sn.uasz.xamle.dto.AvisRequest;
+import sn.uasz.xamle.dto.AvisResponse;
+import sn.uasz.xamle.dto.MonAvisResponse;
 import sn.uasz.xamle.dto.PaiementConfirmation;
 import sn.uasz.xamle.dto.PaiementResponse;
 import sn.uasz.xamle.dto.RendezVousRequest;
 import sn.uasz.xamle.dto.RendezVousResponse;
+import sn.uasz.xamle.service.AvisService;
 import sn.uasz.xamle.service.PaiementService;
 import sn.uasz.xamle.service.RendezVousService;
 
@@ -25,6 +29,7 @@ public class PatientController {
 
     private final RendezVousService rendezVous;
     private final PaiementService paiements;
+    private final AvisService avisService;
 
     @PostMapping("/rendez-vous")
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,5 +57,24 @@ public class PatientController {
                                       @PathVariable("reference") String reference,
                                       @Valid @RequestBody PaiementConfirmation req) {
         return paiements.confirmer(auth.getName(), reference, req.succes());
+    }
+
+    // ---------- Avis sur un professionnel ----------
+
+    @GetMapping("/specialistes/{id}/avis/moi")
+    public MonAvisResponse monAvis(Authentication auth, @PathVariable("id") Long id) {
+        return avisService.monAvis(auth.getName(), id);
+    }
+
+    @PutMapping("/specialistes/{id}/avis")
+    public AvisResponse donnerAvis(Authentication auth, @PathVariable("id") Long id,
+                                   @Valid @RequestBody AvisRequest req) {
+        return avisService.donner(auth.getName(), id, req);
+    }
+
+    @DeleteMapping("/specialistes/{id}/avis")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void supprimerAvis(Authentication auth, @PathVariable("id") Long id) {
+        avisService.supprimer(auth.getName(), id);
     }
 }

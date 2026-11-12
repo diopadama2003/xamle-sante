@@ -21,7 +21,9 @@ public record SpecialisteResponse(
         String photoUrl,
         boolean disponible,
         StatutValidation statut,
-        Double distanceKm
+        Double distanceKm,
+        Double noteMoyenne,
+        long nombreAvis
 ) {
     public static SpecialisteResponse from(Specialiste s, Double distanceKm) {
         Etablissement e = s.getEtablissement();
@@ -31,6 +33,13 @@ public record SpecialisteResponse(
                 e != null ? e.getNom() : null,
                 s.getQuartier(), s.getVille(), s.getLatitude(), s.getLongitude(),
                 s.getTelephone(), s.getHoraires(), s.getLangues(), s.getPhotoUrl(),
-                s.isDisponible(), s.getStatut(), distanceKm);
+                s.isDisponible(), s.getStatut(), distanceKm, null, 0L);
+    }
+
+    /** Même professionnel, avec sa note moyenne et son nombre d'avis */
+    public SpecialisteResponse avecNotes(Double moyenne, long nombre) {
+        return new SpecialisteResponse(id, nom, prenom, specialite, etablissementId, etablissementNom,
+                quartier, ville, latitude, longitude, telephone, horaires, langues, photoUrl,
+                disponible, statut, distanceKm, moyenne, nombre);
     }
 }

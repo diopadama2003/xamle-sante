@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import AvisSection from '../components/AvisSection'
 
 const LIBELLES = {
   EN_ATTENTE_PAIEMENT: 'En attente de paiement',
@@ -108,6 +109,9 @@ export default function MesRendezVous() {
                 </button>
               )}
             </div>
+                        {r.statut === 'CONFIRME' && (
+              <AvisSection specialisteId={r.specialisteId} libelle="Donner mon avis" />
+            )}
           </div>
         ))}
       </div>
